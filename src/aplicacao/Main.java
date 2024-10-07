@@ -1,3 +1,4 @@
+package aplicacao;
 
 import model.Moeda;
 import service.ConexaoExchangeRateAPI;
