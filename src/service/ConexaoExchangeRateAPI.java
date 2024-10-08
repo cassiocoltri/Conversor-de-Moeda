@@ -11,27 +11,40 @@ import java.net.http.HttpResponse;
 
 public class ConexaoExchangeRateAPI {
 
-    private final String currency = "brl";
     final String apiKey = "2142276e6e85e4b9de64d30f";
+    String conexao = "https://v6.exchangerate-api.com/v6/";
 
-    public ConexaoExchangeRateAPI(Moeda moeda) {
+    Moeda moeda;
 
-        String addres = "https://v6.exchangerate-api.com/v6/" + apiKey + "/latest/"+moeda.getNome().toLowerCase();
+    public String getConexao() {
+        return conexao;
+    }
 
-        try {
-        HttpClient client = HttpClient.newHttpClient();
+    public String getApiKey() {
+        return apiKey;
+    }
+
+    public ConexaoExchangeRateAPI(){
+    }
+
+    public void pegarCotacao(Moeda moeda) {
+        String cotacaoSimples = getConexao() + getApiKey() + "/latest/" + moeda.getNome();
+        new ConexaoExchangeRateAPI(cotacaoSimples);
+
+    }
+
+    public ConexaoExchangeRateAPI(String conexao) {
         HttpRequest request = HttpRequest.newBuilder()
-                .uri(URI.create(addres))
+                .uri(URI.create(conexao))
                 .build();
-
-        HttpResponse<String> response = null;
-
-            response = client
+        try {
+            HttpResponse<String> response = HttpClient
+                    .newHttpClient()
                     .send(request, HttpResponse.BodyHandlers.ofString());
 
             String json = response.body();
 
-            if (json.contains("{Bad Request}")) {
+            if (json.contains("error-type")) {
                 throw new MoedaNaoEncontradaException();
             } else {
                 System.out.println(json);
@@ -40,7 +53,6 @@ public class ConexaoExchangeRateAPI {
         } catch (MoedaNaoEncontradaException | IOException | InterruptedException e) {
             System.out.println(e.getMessage());
         }
-
     }
 
 }

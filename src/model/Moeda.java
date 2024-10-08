@@ -11,6 +11,7 @@ public class Moeda {
 
     List<Cotacao> cotacao = new ArrayList<>();
 
+
     public String getNome() {
         return nome;
     }

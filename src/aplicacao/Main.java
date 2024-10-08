@@ -1,8 +1,8 @@
 package aplicacao;
-
+import exceptions.MoedaNaoEncontradaException;
 import model.Moeda;
 import service.ConexaoExchangeRateAPI;
-
+import javax.swing.*;
 import java.util.Locale;
 import java.util.Scanner;
 
@@ -10,16 +10,23 @@ public class Main {
     public static void main(String[] args) {
 
         Locale.setDefault(Locale.US);
-        Scanner scanner = new Scanner(System.in);
+        Scanner sc = new Scanner(System.in);
 
         Moeda moeda = new Moeda();
 
-        moeda.setNome("kyd");
+        System.out.print("Digite moeda para cotação: ");
+        String moedaParaConsulta = sc.next();
 
-        ConexaoExchangeRateAPI conexao = new ConexaoExchangeRateAPI(moeda);
+        moeda.setNome(moedaParaConsulta);
 
-        scanner.close();
+//        JOptionPane.showMessageDialog(null, "Teste",
+//                "Conversor de Moeda", JOptionPane.INFORMATION_MESSAGE);
+//        Moeda moeda = new Moeda(JOptionPane.showInputDialog("Digite uma Moeda para Cotação"));
 
+        ConexaoExchangeRateAPI conexao = new ConexaoExchangeRateAPI();
+        conexao.pegarCotacao(moeda);
+
+        sc.close();
 
     }
 }
