@@ -1,7 +1,7 @@
 package service;
 
 import exceptions.MoedaNaoEncontradaException;
-import model.Moeda;
+import models.Moeda;
 
 import java.io.IOException;
 import java.net.URI;
@@ -28,9 +28,25 @@ public class ConexaoExchangeRateAPI {
     }
 
     public void pegarCotacao(Moeda moeda) {
-        String cotacaoSimples = getConexao() + getApiKey() + "/latest/" + moeda.getNome();
-        new ConexaoExchangeRateAPI(cotacaoSimples);
+        String requisicao = getConexao() + getApiKey() + "/latest/" + moeda.getNome();
+        new ConexaoExchangeRateAPI(requisicao);
 
+    }
+
+
+    public void conversaoDeMoedas(Moeda m1, Moeda m2, Double quantidade) {
+        String requisicao = getConexao() + getApiKey() + "/pair/"
+                + m1.getNome() + "/"
+                + m2.getNome() + "/"
+                + quantidade;
+        new ConexaoExchangeRateAPI(requisicao);
+    }
+
+    public void conversaoDeMoedas(Moeda m1, Moeda m2) {
+        String requisicao = getConexao() + getApiKey() + "/pair/"
+                + m1.getNome() + "/"
+                + m2.getNome();
+        new ConexaoExchangeRateAPI(requisicao);
     }
 
     public ConexaoExchangeRateAPI(String conexao) {
@@ -43,6 +59,8 @@ public class ConexaoExchangeRateAPI {
                     .send(request, HttpResponse.BodyHandlers.ofString());
 
             String json = response.body();
+
+            // Resposta daqui para armazendar os dados no MoedaDTO para impressão do Gson
 
             if (json.contains("error-type")) {
                 throw new MoedaNaoEncontradaException();
