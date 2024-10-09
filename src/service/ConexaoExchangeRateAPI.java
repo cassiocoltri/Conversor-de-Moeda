@@ -1,5 +1,8 @@
 package service;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import dto.MoedaDTO;
 import exceptions.MoedaNaoEncontradaException;
 import models.Moeda;
 
@@ -59,13 +62,17 @@ public class ConexaoExchangeRateAPI {
                     .send(request, HttpResponse.BodyHandlers.ofString());
 
             String json = response.body();
-
-            // Resposta daqui para armazendar os dados no MoedaDTO para impressão do Gson
+            Gson gson = new GsonBuilder().setPrettyPrinting().create();
+            MoedaDTO moedaDTO =gson.fromJson(json, MoedaDTO.class);
 
             if (json.contains("error-type")) {
                 throw new MoedaNaoEncontradaException();
             } else {
-                System.out.println(json);
+                if (moedaDTO.equals("null")){ // Cuidar desse tratamente...
+                    System.out.println(moedaDTO.opcaoTres());
+                } else {
+                    System.out.println(moedaDTO.opcaoDois());
+                }
             }
 
         } catch (MoedaNaoEncontradaException | IOException | InterruptedException e) {
