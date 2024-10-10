@@ -9,14 +9,14 @@ public record MoedaDTO(String base_code, String target_code, String conversion_r
                 + "\nSegunda Moeda: " + target_code
                 + "\nValor Informado: " + conversion_rate
                 + "\nTotal: " + conversion_result
-                +"\n*************Segunda Menságem!*****************";
+                +"\n************* Menságem TESTE da opção 2 *****************";
     }
 
     public String opcaoTres() {
         return "Primeira Moeda: " + base_code
                 + "\nSegunda Moeda: " + target_code
                 + "\nValor Informado: " + conversion_rate
-                + "\n*************Terceira Menságem!*****************";
+                + "\n************* Menságem TESTE da opção 3 !*****************";
     }
 
     @Override

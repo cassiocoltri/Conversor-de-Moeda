@@ -68,7 +68,7 @@ public class ConexaoExchangeRateAPI {
             if (json.contains("error-type")) {
                 throw new MoedaNaoEncontradaException();
             } else {
-                if (moedaDTO.equals("null")){ // Cuidar desse tratamente...
+                if (moedaDTO.conversion_result() == null) {
                     System.out.println(moedaDTO.opcaoTres());
                 } else {
                     System.out.println(moedaDTO.opcaoDois());
