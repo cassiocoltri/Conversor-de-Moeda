@@ -11,6 +11,7 @@ import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
+import java.util.InputMismatchException;
 
 public class ConexaoExchangeRateAPI {
 
@@ -91,13 +92,27 @@ public class ConexaoExchangeRateAPI {
         new ConexaoExchangeRateAPI(requisicao);
     }
 
-    public void testaMoeda(String moeda) {
+    public boolean testaMoeda(String moeda) {
         String requisicao = getConexao() + getApiKey()
                 + "/latest/" + moeda;
         new ConexaoExchangeRateAPI(requisicao);
+        return true;
     }
 
-
+    public boolean testaValor(double valor){
+        try {
+            if (valor < 0) {
+                System.out.println("Valor deve ser Maior que Zero\nOperação cancelada!");
+            } else if (valor > 0) {
+                return true;
+            } else {
+                throw new NumberFormatException();
+            }
+        } catch (NumberFormatException e) {
+            System.out.println("Precisa ser um número válido!\nOperação cancelada!");
+        }
+        return false;
+    }
 
 
     public ConexaoExchangeRateAPI(String conexao) {
@@ -117,16 +132,18 @@ public class ConexaoExchangeRateAPI {
 
             Gson gson = new GsonBuilder().setPrettyPrinting().create();
             MoedaDTO moedaDTO = gson.fromJson(json, MoedaDTO.class);
-            System.out.println(moedaDTO);
+            //System.out.println(moedaDTO);
 
 
                 if (moedaDTO.conversion_result() == null) {
                     System.out.println("caiu na opcaoComparaDuasMoedas...");
                     System.out.println(moedaDTO.opcaoComparacaoDuasMoedas());
 
+
                 } else {
                     System.out.println("Caiu na opcao padrão...");
                     System.out.println(moedaDTO.opcaoPadrao());
+
                 }
 
         } catch (MoedaNaoEncontradaException | IOException | InterruptedException e) {

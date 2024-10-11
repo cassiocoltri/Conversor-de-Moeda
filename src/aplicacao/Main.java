@@ -16,100 +16,114 @@ public class Main {
         Mensagem mensagem = new Mensagem();
 
         String opcao = "";
-        double valor = 0.0;
+        String valor;
 
         while (!opcao.equals("0")) {
             mensagem.apresentacao();
             opcao = sc.next();
 
-            if (opcao.equals("1")) {
-                System.out.print("Digite moeda para cotação: ");
-                String moedaParaConsulta = sc.next();
-                conexao.testaMoeda(moedaParaConsulta);
+                if (opcao.equals("1")) {
+                    System.out.print("Digite moeda para cotação: ");
+                    String moedaParaConsulta = sc.next();
 
-                Moeda moeda = new Moeda();
-                moeda.setNome(moedaParaConsulta);
-                conexao.pegarCotacao(moeda);
-            }
-
-            if (opcao.equals("2")) {
-                System.out.print("Digite a Primeira moeda: ");
-                String nomePrimeiraMoeda = sc.next();
-                conexao.testaMoeda(nomePrimeiraMoeda);
-
-                System.out.print("Digite a Segunda moeda: ");
-                String nomeSegundaMoeda = sc.next();
-                conexao.testaMoeda(nomeSegundaMoeda);
-
-                Moeda moeda1 = new Moeda();
-                Moeda moeda2 = new Moeda();
-                moeda1.setNome(nomePrimeiraMoeda);
-                moeda2.setNome(nomeSegundaMoeda);
-
-                // -------------------- FAZER UM MÉTODO PARA VALIDAR SEM POLUIR AQUI -------------------------
-                System.out.print("Digite Valor para conversão: ");
-                try {
-                    valor = sc.nextDouble();
-                    if (valor < 0) {
-                        System.out.println("Valor deve ser Maior que Zero");
-                        continue;
+                    if (!conexao.testaMoeda(moedaParaConsulta)) {
+                        break;
+                    } else {
+                        Moeda moeda = new Moeda();
+                        moeda.setNome(moedaParaConsulta);
+                        conexao.pegarCotacao(moeda);
                     }
 
-                } catch (InputMismatchException e) {
-                    System.out.println("Caracter Inválido! \n Apenas valores numéricos!");
-                    continue;
                 }
-                conexao.conversaoDeMoedas(moeda1, moeda2, valor);
+                if (opcao.equals("2")) {
+                    System.out.print("Digite a Primeira moeda: ");
+                    String nomePrimeiraMoeda = sc.next();
+                    conexao.testaMoeda(nomePrimeiraMoeda);
 
-            }
+                    System.out.print("Digite a Segunda moeda: ");
+                    String nomeSegundaMoeda = sc.next();
+                    conexao.testaMoeda(nomeSegundaMoeda);
 
-            if (opcao.equals("3")) {
-                System.out.print("Digite a Primeira moeda: ");
-                String nomePrimeiraMoeda = sc.next();
-                conexao.testaMoeda(nomePrimeiraMoeda);
+                    Moeda moeda1 = new Moeda();
+                    Moeda moeda2 = new Moeda();
+                    moeda1.setNome(nomePrimeiraMoeda);
+                    moeda2.setNome(nomeSegundaMoeda);
 
-                System.out.print("Digite a Segunda moeda: ");
-                String nomeSegundaMoeda = sc.next();
-                conexao.testaMoeda(nomeSegundaMoeda);
+                    System.out.print("Digite Valor para conversão: ");
+                    Double.parseDouble(valor = sc.next());
+                    if (conexao.testaValor(Double.parseDouble(valor))) continue;
+                    conexao.conversaoDeMoedas(moeda1, moeda2, Double.parseDouble(valor));
 
-                Moeda moeda1 = new Moeda();
-                Moeda moeda2 = new Moeda();
-                moeda1.setNome(nomePrimeiraMoeda);
-                moeda2.setNome(nomeSegundaMoeda);
-                conexao.conversaoDeMoedas(moeda1, moeda2);
+                }
+                if (opcao.equals("3")) {
+                    System.out.print("Digite a Primeira moeda: ");
+                    String nomePrimeiraMoeda = sc.next();
+                    conexao.testaMoeda(nomePrimeiraMoeda);
 
-            }
-            if (opcao.equals("4")) {
-                mensagem.valorDemoeda();
-                valor = sc.nextDouble();
-                conexao.dolarParaPesoArgentino(valor);
+                    System.out.print("Digite a Segunda moeda: ");
+                    String nomeSegundaMoeda = sc.next();
+                    conexao.testaMoeda(nomeSegundaMoeda);
 
-            }
-            if (opcao.equals("5")) {
-                mensagem.valorDemoeda();
-                valor = sc.nextDouble();
-                conexao.pesoArgentinoParaDolar(valor);
-            }
-            if (opcao.equals("6")) {
-                mensagem.valorDemoeda();
-                valor = sc.nextDouble();
-                conexao.dolarParaRealBrasileiro(valor);
-            }
-            if (opcao.equals("7")) {
-                mensagem.valorDemoeda();
-                valor = sc.nextDouble();
-                conexao.drealBrasileiroParaDolar(valor);
-            }
-            if (opcao.equals("8")) {
-                mensagem.valorDemoeda();
-                valor = sc.nextDouble();
-                conexao.dolarParaPesoColombiano(valor);
-            }
-            if (opcao.equals("9")) {
-                mensagem.valorDemoeda();
-                valor = sc.nextDouble();
-                conexao.pesoColombianoParaDolar(valor);
-            }
+                    Moeda moeda1 = new Moeda();
+                    Moeda moeda2 = new Moeda();
+                    moeda1.setNome(nomePrimeiraMoeda);
+                    moeda2.setNome(nomeSegundaMoeda);
+                    conexao.conversaoDeMoedas(moeda1, moeda2);
+
+                }
+
+                // Priorizar a PARTE DE BAIXO (4 a 9 !!!!
+                if (opcao.equals("4")) {
+                    mensagem.valorDemoeda();
+                    Double.parseDouble(valor = sc.next());
+                    try {
+                        if (!conexao.testaValor(Double.parseDouble(valor))) {
+                            continue;
+                        }
+                    } catch (InputMismatchException e) {
+                        System.out.println(e.getMessage());
+                    }
+                    conexao.dolarParaPesoArgentino(Double.parseDouble(valor));
+                }
+
+
+                if (opcao.equals("5")) {
+                    mensagem.valorDemoeda();
+                    Double.parseDouble(valor = sc.next());
+                    if (conexao.testaValor(Double.parseDouble(valor))) {
+                        conexao.pesoArgentinoParaDolar(Double.parseDouble(valor));
+                    } else {
+                        continue;
+                    }
+                }
+
+
+                if (opcao.equals("6")) {
+                    mensagem.valorDemoeda();
+                    Double.parseDouble(valor = sc.next());
+                    if (!conexao.testaValor(Double.parseDouble(valor))) continue;
+                    conexao.dolarParaRealBrasileiro(Double.parseDouble(valor));
+                }
+                if (opcao.equals("7")) {
+                    mensagem.valorDemoeda();
+                    Double.parseDouble(valor = sc.next());
+                    if (!conexao.testaValor(Double.parseDouble(valor))) continue;
+                    conexao.drealBrasileiroParaDolar(Double.parseDouble(valor));
+                }
+                if (opcao.equals("8")) {
+                    mensagem.valorDemoeda();
+                    Double.parseDouble(valor = sc.next());
+                    if (!conexao.testaValor(Double.parseDouble(valor))) continue;
+                    conexao.dolarParaPesoColombiano(Double.parseDouble(valor));
+                }
+                if (opcao.equals("9")) {
+                    mensagem.valorDemoeda();
+                    Double.parseDouble(valor = sc.next());
+                    if (!conexao.testaValor(Double.parseDouble(valor))) continue;
+                    conexao.pesoColombianoParaDolar(Double.parseDouble(valor));
+                }
+
+
         }
 
         System.out.println("Programa Finalizado!");
