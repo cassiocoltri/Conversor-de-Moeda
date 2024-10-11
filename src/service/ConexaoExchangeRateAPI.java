@@ -91,6 +91,14 @@ public class ConexaoExchangeRateAPI {
         new ConexaoExchangeRateAPI(requisicao);
     }
 
+    public void testaMoeda(String moeda) {
+        String requisicao = getConexao() + getApiKey()
+                + "/latest/" + moeda;
+        new ConexaoExchangeRateAPI(requisicao);
+    }
+
+
+
 
     public ConexaoExchangeRateAPI(String conexao) {
         HttpRequest request = HttpRequest.newBuilder()
@@ -102,21 +110,17 @@ public class ConexaoExchangeRateAPI {
                     .send(request, HttpResponse.BodyHandlers.ofString());
 
             String json = response.body();
-            if (json.equals("error")) throw new MoedaNaoEncontradaException();
+            if (json.contains("{\"result\":\"error\"")) {
+                throw new MoedaNaoEncontradaException();
+
+            }
 
             Gson gson = new GsonBuilder().setPrettyPrinting().create();
-            MoedaDTO moedaDTO =gson.fromJson(json, MoedaDTO.class);
+            MoedaDTO moedaDTO = gson.fromJson(json, MoedaDTO.class);
+            System.out.println(moedaDTO);
 
-//            if (moedaDTO.base_code() == null) {
-//                System.out.println("Caiu aqui!!"); // <---------Resolver aqui
-//                throw new MoedaNaoEncontradaException();
-//
-//            } else {
-                if(moedaDTO.base_code() == null || moedaDTO.target_code() == null) {
-                    System.out.println("Tchê");
-                    throw new MoedaNaoEncontradaException();
 
-                } else if (moedaDTO.conversion_result() == null) {
+                if (moedaDTO.conversion_result() == null) {
                     System.out.println("caiu na opcaoComparaDuasMoedas...");
                     System.out.println(moedaDTO.opcaoComparacaoDuasMoedas());
 
@@ -124,11 +128,10 @@ public class ConexaoExchangeRateAPI {
                     System.out.println("Caiu na opcao padrão...");
                     System.out.println(moedaDTO.opcaoPadrao());
                 }
-            //}
-
 
         } catch (MoedaNaoEncontradaException | IOException | InterruptedException e) {
             System.out.println(e.getMessage());
+
         }
     }
 

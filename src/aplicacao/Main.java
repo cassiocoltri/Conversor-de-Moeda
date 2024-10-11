@@ -3,6 +3,7 @@ import mensagens.Mensagem;
 import models.Moeda;
 import service.ConexaoExchangeRateAPI;
 
+import java.util.InputMismatchException;
 import java.util.Locale;
 import java.util.Scanner;
 
@@ -15,39 +16,66 @@ public class Main {
         Mensagem mensagem = new Mensagem();
 
         String opcao = "";
-        double valor;
+        double valor = 0.0;
 
         while (!opcao.equals("0")) {
             mensagem.apresentacao();
             opcao = sc.next();
 
             if (opcao.equals("1")) {
-                Moeda moeda = new Moeda();
                 System.out.print("Digite moeda para cotação: ");
                 String moedaParaConsulta = sc.next();
+                conexao.testaMoeda(moedaParaConsulta);
+
+                Moeda moeda = new Moeda();
                 moeda.setNome(moedaParaConsulta);
                 conexao.pegarCotacao(moeda);
             }
+
             if (opcao.equals("2")) {
+                System.out.print("Digite a Primeira moeda: ");
+                String nomePrimeiraMoeda = sc.next();
+                conexao.testaMoeda(nomePrimeiraMoeda);
+
+                System.out.print("Digite a Segunda moeda: ");
+                String nomeSegundaMoeda = sc.next();
+                conexao.testaMoeda(nomeSegundaMoeda);
+
                 Moeda moeda1 = new Moeda();
                 Moeda moeda2 = new Moeda();
-                System.out.print("Digite a Primeira moeda: ");
-                moeda1.setNome(sc.next());
-                System.out.print("Digite a Segunda moeda: ");
-                moeda2.setNome(sc.next());
+                moeda1.setNome(nomePrimeiraMoeda);
+                moeda2.setNome(nomeSegundaMoeda);
+
+                // -------------------- FAZER UM MÉTODO PARA VALIDAR SEM POLUIR AQUI -------------------------
                 System.out.print("Digite Valor para conversão: ");
-                valor = sc.nextDouble();
+                try {
+                    valor = sc.nextDouble();
+                    if (valor < 0) {
+                        System.out.println("Valor deve ser Maior que Zero");
+                        continue;
+                    }
+
+                } catch (InputMismatchException e) {
+                    System.out.println("Caracter Inválido! \n Apenas valores numéricos!");
+                    continue;
+                }
                 conexao.conversaoDeMoedas(moeda1, moeda2, valor);
 
             }
+
             if (opcao.equals("3")) {
+                System.out.print("Digite a Primeira moeda: ");
+                String nomePrimeiraMoeda = sc.next();
+                conexao.testaMoeda(nomePrimeiraMoeda);
+
+                System.out.print("Digite a Segunda moeda: ");
+                String nomeSegundaMoeda = sc.next();
+                conexao.testaMoeda(nomeSegundaMoeda);
+
                 Moeda moeda1 = new Moeda();
                 Moeda moeda2 = new Moeda();
-
-                System.out.print("Digite a Primeira moeda: ");
-                moeda1.setNome(sc.next());
-                System.out.print("Digite a Segunda moeda: ");
-                moeda2.setNome(sc.next());
+                moeda1.setNome(nomePrimeiraMoeda);
+                moeda2.setNome(nomeSegundaMoeda);
                 conexao.conversaoDeMoedas(moeda1, moeda2);
 
             }
