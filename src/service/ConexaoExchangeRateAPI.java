@@ -11,7 +11,6 @@ import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
-import java.util.InputMismatchException;
 
 public class ConexaoExchangeRateAPI {
 
@@ -42,7 +41,6 @@ public class ConexaoExchangeRateAPI {
                 + quantidade;
         new ConexaoExchangeRateAPI(requisicao);
     }
-
     public void conversaoDeMoedas(Moeda m1, Moeda m2) {
         String requisicao = getConexao() + getApiKey() + "/pair/"
                 + m1.getNome() + "/"
@@ -50,41 +48,37 @@ public class ConexaoExchangeRateAPI {
         new ConexaoExchangeRateAPI(requisicao);
     }
 
+
     public void dolarParaPesoArgentino(Double quantidade) {
         String requisicao = getConexao() + getApiKey()
                 + "/pair/usd/ars/"
                 + quantidade;
         new ConexaoExchangeRateAPI(requisicao);
     }
-
     public void pesoArgentinoParaDolar(Double quantidade) {
         String requisicao = getConexao() + getApiKey()
                 + "/pair/ars/usd/"
                 + quantidade;
         new ConexaoExchangeRateAPI(requisicao);
     }
-
     public void dolarParaRealBrasileiro(Double quantidade) {
         String requisicao = getConexao() + getApiKey()
                 + "/pair/usd/brl/"
                 + quantidade;
         new ConexaoExchangeRateAPI(requisicao);
     }
-
     public void drealBrasileiroParaDolar(Double quantidade) {
         String requisicao = getConexao() + getApiKey()
                 + "/pair/brl/usd/"
                 + quantidade;
         new ConexaoExchangeRateAPI(requisicao);
     }
-
     public void dolarParaPesoColombiano(Double quantidade) {
         String requisicao = getConexao() + getApiKey()
                 + "/pair/usd/cop/"
                 + quantidade;
         new ConexaoExchangeRateAPI(requisicao);
     }
-
     public void pesoColombianoParaDolar(Double quantidade) {
         String requisicao = getConexao() + getApiKey()
                 + "/pair/cop/usd/"
@@ -99,17 +93,18 @@ public class ConexaoExchangeRateAPI {
         return true;
     }
 
-    public boolean testaValor(double valor){
+    public boolean testaValor(String valor){
+        double teste;
         try {
-            if (valor < 0) {
-                System.out.println("Valor deve ser Maior que Zero\nOperação cancelada!");
-            } else if (valor > 0) {
+            teste = Double.parseDouble(valor);
+            if (teste > 0) {
                 return true;
             } else {
-                throw new NumberFormatException();
+                System.out.println("Precisa ser um número Positivo!\nOperação cancelada");
+                return false;
             }
         } catch (NumberFormatException e) {
-            System.out.println("Precisa ser um número válido!\nOperação cancelada!");
+            System.out.println("Caracter inválido! Precisa ser um número positvo maior que zero!\nOperação cancelada");
         }
         return false;
     }

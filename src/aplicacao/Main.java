@@ -50,8 +50,8 @@ public class Main {
                     moeda2.setNome(nomeSegundaMoeda);
 
                     System.out.print("Digite Valor para conversão: ");
-                    Double.parseDouble(valor = sc.next());
-                    if (conexao.testaValor(Double.parseDouble(valor))) continue;
+                    valor = sc.next();
+                    if (conexao.testaValor(valor)) continue;
                     conexao.conversaoDeMoedas(moeda1, moeda2, Double.parseDouble(valor));
 
                 }
@@ -72,54 +72,42 @@ public class Main {
 
                 }
 
-                // Priorizar a PARTE DE BAIXO (4 a 9 !!!!
+                // Priorizar a PARTE DE BAIXO (4 a 9 !!!! [ARRUMADO!!!!]
                 if (opcao.equals("4")) {
                     mensagem.valorDemoeda();
-                    Double.parseDouble(valor = sc.next());
-                    try {
-                        if (!conexao.testaValor(Double.parseDouble(valor))) {
-                            continue;
-                        }
-                    } catch (InputMismatchException e) {
-                        System.out.println(e.getMessage());
-                    }
+                    valor = sc.next();
+                    if (!conexao.testaValor((valor))) continue;
                     conexao.dolarParaPesoArgentino(Double.parseDouble(valor));
                 }
-
-
                 if (opcao.equals("5")) {
                     mensagem.valorDemoeda();
-                    Double.parseDouble(valor = sc.next());
-                    if (conexao.testaValor(Double.parseDouble(valor))) {
-                        conexao.pesoArgentinoParaDolar(Double.parseDouble(valor));
-                    } else {
-                        continue;
-                    }
+                    valor = sc.next();
+                    if (!conexao.testaValor(valor)) continue;
+                    conexao.pesoArgentinoParaDolar(Double.parseDouble(valor));
+
                 }
-
-
                 if (opcao.equals("6")) {
                     mensagem.valorDemoeda();
-                    Double.parseDouble(valor = sc.next());
-                    if (!conexao.testaValor(Double.parseDouble(valor))) continue;
+                    valor = sc.next();
+                    if (!conexao.testaValor((valor))) continue;
                     conexao.dolarParaRealBrasileiro(Double.parseDouble(valor));
                 }
                 if (opcao.equals("7")) {
                     mensagem.valorDemoeda();
-                    Double.parseDouble(valor = sc.next());
-                    if (!conexao.testaValor(Double.parseDouble(valor))) continue;
+                    valor = sc.next();
+                    if (!conexao.testaValor((valor))) continue;
                     conexao.drealBrasileiroParaDolar(Double.parseDouble(valor));
                 }
                 if (opcao.equals("8")) {
                     mensagem.valorDemoeda();
-                    Double.parseDouble(valor = sc.next());
-                    if (!conexao.testaValor(Double.parseDouble(valor))) continue;
+                    valor = sc.next();
+                    if (!conexao.testaValor((valor))) continue;
                     conexao.dolarParaPesoColombiano(Double.parseDouble(valor));
                 }
                 if (opcao.equals("9")) {
                     mensagem.valorDemoeda();
-                    Double.parseDouble(valor = sc.next());
-                    if (!conexao.testaValor(Double.parseDouble(valor))) continue;
+                    valor = sc.next();
+                    if (!conexao.testaValor(valor)) continue;
                     conexao.pesoColombianoParaDolar(Double.parseDouble(valor));
                 }
 
