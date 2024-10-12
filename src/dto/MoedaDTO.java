@@ -3,6 +3,9 @@ package dto;
 public record MoedaDTO(String base_code, String target_code, String conversion_rate, String conversion_result) {
 
 
+    public MoedaDTO {
+    }
+
     public String opcaoPadrao() { // Menságem recebido nas consultas padronizadas
         return "-----------------------------------\n" +
                 "Moeda Principal: " + base_code
@@ -28,5 +31,15 @@ public record MoedaDTO(String base_code, String target_code, String conversion_r
     @Override
     public String base_code() {
         return base_code;
+    }
+
+    @Override
+    public String target_code() {
+        return target_code;
+    }
+
+    @Override
+    public String conversion_rate() {
+        return conversion_rate;
     }
 }

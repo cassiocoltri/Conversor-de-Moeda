@@ -12,6 +12,7 @@ import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
 import java.net.http.HttpResponse;
 
+
 public class ConexaoExchangeRateAPI {
 
     final String apiKey = "2142276e6e85e4b9de64d30f";
@@ -28,7 +29,7 @@ public class ConexaoExchangeRateAPI {
     public ConexaoExchangeRateAPI(){
     }
 
-    public void pegarCotacao(Moeda moeda) { // Dando erro aqui <---- Null
+    public void pegarCotacao(Moeda moeda) {
         String requisicao = getConexao() + getApiKey() + "/latest/" + moeda.getNome();
         new ConexaoExchangeRateAPI(requisicao);
 
@@ -41,6 +42,7 @@ public class ConexaoExchangeRateAPI {
                 + quantidade;
         new ConexaoExchangeRateAPI(requisicao);
     }
+
     public void conversaoDeMoedas(Moeda m1, Moeda m2) {
         String requisicao = getConexao() + getApiKey() + "/pair/"
                 + m1.getNome() + "/"
@@ -67,7 +69,7 @@ public class ConexaoExchangeRateAPI {
                 + quantidade;
         new ConexaoExchangeRateAPI(requisicao);
     }
-    public void drealBrasileiroParaDolar(Double quantidade) {
+    public void realBrasileiroParaDolar(Double quantidade) {
         String requisicao = getConexao() + getApiKey()
                 + "/pair/brl/usd/"
                 + quantidade;
@@ -92,7 +94,6 @@ public class ConexaoExchangeRateAPI {
         new ConexaoExchangeRateAPI(requisicao);
         return true;
     }
-
     public boolean testaValor(String valor){
         double teste;
         try {
@@ -120,26 +121,20 @@ public class ConexaoExchangeRateAPI {
                     .send(request, HttpResponse.BodyHandlers.ofString());
 
             String json = response.body();
-            if (json.contains("{\"result\":\"error\"")) {
-                throw new MoedaNaoEncontradaException();
-
-            }
 
             Gson gson = new GsonBuilder().setPrettyPrinting().create();
             MoedaDTO moedaDTO = gson.fromJson(json, MoedaDTO.class);
-            //System.out.println(moedaDTO);
 
+          if (json.contains("{\"result\":\"error\"")) {
+              throw new MoedaNaoEncontradaException();
+          }
+            if (moedaDTO.conversion_result() == null) {
+                System.out.println(json);
 
-                if (moedaDTO.conversion_result() == null) {
-                    System.out.println("caiu na opcaoComparaDuasMoedas...");
-                    System.out.println(moedaDTO.opcaoComparacaoDuasMoedas());
+            } else {
+                System.out.println(moedaDTO.opcaoPadrao());
 
-
-                } else {
-                    System.out.println("Caiu na opcao padrão...");
-                    System.out.println(moedaDTO.opcaoPadrao());
-
-                }
+            }
 
         } catch (MoedaNaoEncontradaException | IOException | InterruptedException e) {
             System.out.println(e.getMessage());
