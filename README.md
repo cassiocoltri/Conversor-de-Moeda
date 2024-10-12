@@ -3,13 +3,9 @@
 <br>
 Conversor de moedas dinâmico, retorna qualquer moeda corrente que corresponde ao código universal 
 das 161 moedas existentes.
-<br>
-------------------------------------------------------------
-<br>
-[Moedas aceitas:] (**https://www.exchangerate-api.com/docs/supported-currencies**).
 
-Moedas aceitas: [Clique Aqui](https://www.exchangerate-api.com/docs/supported-currencies).
-
+---
+<br>Moedas aceitas: [Clique Aqui](https://www.exchangerate-api.com/docs/supported-currencies).
 
 Opções existentes atualmente na versão Beta:
 <br>
@@ -26,7 +22,9 @@ Opções existentes atualmente na versão Beta:
 * Dólar (USD) =>> Peso colombiano (COP)
 <br>
 * Peso colombiano (COP) =>> Dólar (USD)
------------------
+<br>
+---
+<br>
 Console aceita leitura de qualquer tipo, dando os devidos tratamentos aos mesmos.
 <br>
 **Exercício realisado em Java vanilla.**
